@@ -1,38 +1,12 @@
 import { motion } from "framer-motion";
 import { Calendar, Clock, MapPin, Users, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const workshops = [
-  {
-    id: 1,
-    title: "Hands-On Ethical Hacking Workshop",
-    date: "January 15-17, 2025",
-    duration: "3 Days",
-    location: "Offline + Live Online",
-    seats: "25 Seats",
-    description: "Intensive practical workshop covering reconnaissance, exploitation, and post-exploitation techniques.",
-  },
-  {
-    id: 2,
-    title: "SOC Analyst Bootcamp",
-    date: "February 8-9, 2025",
-    duration: "2 Days",
-    location: "Online Live",
-    seats: "50 Seats",
-    description: "Learn threat detection, SIEM tools, and incident response procedures in a simulated SOC environment.",
-  },
-  {
-    id: 3,
-    title: "Bug Bounty Masterclass",
-    date: "March 1, 2025",
-    duration: "1 Day",
-    location: "Hybrid",
-    seats: "30 Seats",
-    description: "From finding your first bug to building a career in bug bounty hunting with real platform experience.",
-  },
-];
+import { Link } from "react-router-dom";
+import { workshops } from "@/data/workshops";
 
 export const WorkshopsSection = () => {
+  const displayedWorkshops = workshops.slice(0, 3);
+
   return (
     <section id="workshops" className="py-20 lg:py-32 bg-muted/30 relative overflow-hidden">
       {/* Background */}
@@ -60,7 +34,7 @@ export const WorkshopsSection = () => {
 
         {/* Workshops */}
         <div className="space-y-6">
-          {workshops.map((workshop, index) => (
+          {displayedWorkshops.map((workshop, index) => (
             <motion.div
               key={workshop.id}
               initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
@@ -72,9 +46,16 @@ export const WorkshopsSection = () => {
               <div className="flex flex-col lg:flex-row lg:items-center gap-6">
                 {/* Main Content */}
                 <div className="flex-1">
-                  <h3 className="text-xl lg:text-2xl font-semibold text-foreground mb-3">
-                    {workshop.title}
-                  </h3>
+                  <div className="flex items-center gap-3 mb-3">
+                    <h3 className="text-xl lg:text-2xl font-semibold text-foreground">
+                      {workshop.title}
+                    </h3>
+                    {workshop.registrationOpen && (
+                      <span className="px-2 py-0.5 bg-green-500/10 text-green-600 text-xs font-semibold rounded">
+                        Open
+                      </span>
+                    )}
+                  </div>
                   <p className="text-muted-foreground mb-4">
                     {workshop.description}
                   </p>
@@ -95,17 +76,24 @@ export const WorkshopsSection = () => {
                     </div>
                     <div className="flex items-center gap-2 text-muted-foreground">
                       <Users className="w-4 h-4 text-primary" />
-                      {workshop.seats}
+                      {workshop.seats} Seats
                     </div>
                   </div>
                 </div>
 
                 {/* CTA */}
                 <div className="flex-shrink-0">
-                  <Button variant="hero" className="w-full lg:w-auto group">
-                    Register Now
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
+                  {workshop.registrationOpen ? (
+                    <Button variant="hero" className="w-full lg:w-auto group">
+                      Register Now
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  ) : (
+                    <Button variant="hero-ghost" className="w-full lg:w-auto group">
+                      View Details
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  )}
                 </div>
               </div>
             </motion.div>
@@ -120,10 +108,12 @@ export const WorkshopsSection = () => {
           transition={{ delay: 0.4 }}
           className="text-center mt-10"
         >
-          <Button variant="hero-ghost" size="lg">
-            View All Workshops
-            <ArrowRight className="w-5 h-5" />
-          </Button>
+          <Link to="/workshops">
+            <Button variant="hero-ghost" size="lg">
+              View All Workshops
+              <ArrowRight className="w-5 h-5" />
+            </Button>
+          </Link>
         </motion.div>
       </div>
     </section>

@@ -94,10 +94,12 @@ export const CoursesSection = () => {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="text-center mt-12"
         >
-          <Button variant="hero" size="lg">
-            Explore All Courses
-            <ArrowRight className="w-5 h-5" />
-          </Button>
+          <Link to="/courses">
+            <Button variant="hero" size="lg">
+              Explore All Courses
+              <ArrowRight className="w-5 h-5" />
+            </Button>
+          </Link>
         </motion.div>
       </div>
     </section>
