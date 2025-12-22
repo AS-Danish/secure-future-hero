@@ -197,7 +197,7 @@ const WorkshopRegister = () => {
                       className="w-full"
                       disabled={!formData.agreeTerms}
                     >
-                      Complete Registration - ₹{workshop.price}
+                      Complete Registration
                     </Button>
                   </form>
                 </CardContent>
@@ -241,16 +241,6 @@ const WorkshopRegister = () => {
                     </div>
                   </div>
 
-                  <div className="border-t border-border pt-4">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-muted-foreground">Workshop Fee</span>
-                      <span className="font-semibold text-foreground">₹{workshop.price}</span>
-                    </div>
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="text-muted-foreground">GST (18%)</span>
-                      <span className="text-muted-foreground">Included</span>
-                    </div>
-                  </div>
 
                   <div className="bg-primary/5 rounded-lg p-4 space-y-2">
                     <div className="flex items-center gap-2 text-sm text-foreground">

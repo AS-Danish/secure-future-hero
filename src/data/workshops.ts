@@ -11,7 +11,6 @@ export interface Workshop {
   topics: string[];
   isUpcoming: boolean;
   registrationOpen: boolean;
-  price: number;
   category: string;
 }
 
@@ -29,7 +28,6 @@ export const workshops: Workshop[] = [
     topics: ["Reconnaissance", "Vulnerability Scanning", "Exploitation", "Post-Exploitation", "Report Writing"],
     isUpcoming: true,
     registrationOpen: true,
-    price: 4999,
     category: "Ethical Hacking",
   },
   {
@@ -45,7 +43,6 @@ export const workshops: Workshop[] = [
     topics: ["SIEM Fundamentals", "Log Analysis", "Threat Detection", "Incident Response", "Alert Triage"],
     isUpcoming: true,
     registrationOpen: true,
-    price: 3499,
     category: "SOC & Blue Team",
   },
   {
@@ -61,7 +58,6 @@ export const workshops: Workshop[] = [
     topics: ["Bug Bounty Platforms", "Reconnaissance", "Web Vulnerabilities", "Report Writing", "Career Guidance"],
     isUpcoming: true,
     registrationOpen: false,
-    price: 2499,
     category: "Bug Bounty",
   },
   {
@@ -77,7 +73,6 @@ export const workshops: Workshop[] = [
     topics: ["AWS Security", "Azure Security", "GCP Security", "IAM Best Practices", "Cloud Compliance"],
     isUpcoming: true,
     registrationOpen: false,
-    price: 3999,
     category: "Cloud Security",
   },
   {
@@ -93,7 +88,6 @@ export const workshops: Workshop[] = [
     topics: ["Static Analysis", "Dynamic Analysis", "Sandboxing", "Malware Types", "Reverse Engineering Basics"],
     isUpcoming: true,
     registrationOpen: false,
-    price: 2999,
     category: "Malware Analysis",
   },
   {
@@ -109,7 +103,6 @@ export const workshops: Workshop[] = [
     topics: ["Web Challenges", "Cryptography", "Forensics", "Reverse Engineering", "Team Strategies"],
     isUpcoming: true,
     registrationOpen: false,
-    price: 3499,
     category: "CTF & Competitions",
   },
 ];

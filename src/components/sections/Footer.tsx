@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
-import { Shield, Facebook, Twitter, Linkedin, Instagram, Youtube, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Shield, Facebook, Twitter, Linkedin, Instagram, Youtube } from "lucide-react";
 
 const footerLinks = {
   courses: [
@@ -43,38 +42,6 @@ const socialLinks = [
 export const Footer = () => {
   return (
     <footer className="bg-foreground text-background relative overflow-hidden">
-      {/* Newsletter Section */}
-      <div className="border-b border-background/10">
-        <div className="container mx-auto px-4 lg:px-8 py-12 lg:py-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8"
-          >
-            <div className="max-w-lg">
-              <h3 className="text-2xl lg:text-3xl font-bold mb-3">
-                Stay Updated with Cyber Security Trends
-              </h3>
-              <p className="text-background/70">
-                Get the latest insights, tips, and career opportunities delivered to your inbox.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="px-5 py-3 rounded-xl bg-background/10 border border-background/20 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-background placeholder:text-background/50 w-full sm:w-72"
-              />
-              <Button variant="hero" className="flex-shrink-0 group">
-                Subscribe
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-
       {/* Main Footer */}
       <div className="container mx-auto px-4 lg:px-8 py-12 lg:py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-10 lg:gap-8">

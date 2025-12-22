@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Clock, BookOpen, Search } from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { courses } from "@/data/courses";
@@ -124,10 +124,6 @@ const AllCourses = () => {
                     <span className="flex items-center gap-1.5">
                       <Clock className="w-3.5 h-3.5 text-primary" />
                       {course.duration}
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <BookOpen className="w-3.5 h-3.5 text-primary" />
-                      {course.level}
                     </span>
                   </div>
 

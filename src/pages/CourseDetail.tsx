@@ -69,10 +69,6 @@ const CourseDetail = () => {
                   <span>{course.duration}</span>
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground">
-                  <BookOpen className="w-5 h-5 text-primary" />
-                  <span>{course.level}</span>
-                </div>
-                <div className="flex items-center gap-2 text-muted-foreground">
                   <MapPin className="w-5 h-5 text-primary" />
                   <span>{course.mode}</span>
                 </div>
