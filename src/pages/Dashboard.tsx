@@ -32,15 +32,15 @@ import { ImageUpload } from "@/components/ImageUpload";
 
 // Sample data for UI
 const sampleBlogs = [
-  { id: "1", title: "Top 10 Cybersecurity Threats in 2024", category: "Threats", status: "published", date: "2024-01-15" },
-  { id: "2", title: "Getting Started with Ethical Hacking", category: "Career", status: "draft", date: "2024-01-10" },
-  { id: "3", title: "Understanding Zero-Day Vulnerabilities", category: "Security", status: "published", date: "2024-01-05" },
+  { id: "1", title: "Top 10 Cybersecurity Threats in 2024", category: "Threats", date: "2024-01-15" },
+  { id: "2", title: "Getting Started with Ethical Hacking", category: "Career", date: "2024-01-10" },
+  { id: "3", title: "Understanding Zero-Day Vulnerabilities", category: "Security", date: "2024-01-05" },
 ];
 
 const sampleCourses = [
-  { id: "1", title: "Certified Ethical Hacker (CEH)", category: "Certification", students: 156, status: "active" },
-  { id: "2", title: "Web Application Security", category: "Specialization", students: 89, status: "active" },
-  { id: "3", title: "Network Security Fundamentals", category: "Foundation", students: 234, status: "draft" },
+  { id: "1", title: "Certified Ethical Hacker (CEH)", category: "Certification", students: 156 },
+  { id: "2", title: "Web Application Security", category: "Specialization", students: 89 },
+  { id: "3", title: "Network Security Fundamentals", category: "Foundation", students: 234 },
 ];
 
 const sampleWorkshops = [
@@ -50,9 +50,9 @@ const sampleWorkshops = [
 ];
 
 const sampleTestimonials = [
-  { id: "1", name: "Rahul Sharma", course: "CEH", rating: 5, status: "approved" },
-  { id: "2", name: "Priya Patel", course: "Web Security", rating: 5, status: "pending" },
-  { id: "3", name: "Amit Kumar", course: "Network Security", rating: 4, status: "approved" },
+  { id: "1", name: "Rahul Sharma", course: "CEH", rating: 5 },
+  { id: "2", name: "Priya Patel", course: "Web Security", rating: 5 },
+  { id: "3", name: "Amit Kumar", course: "Network Security", rating: 4 },
 ];
 
 const sampleFaculty = [
@@ -112,49 +112,55 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-muted/30 flex">
-      {/* Sidebar */}
-      <AnimatePresence>
-        {sidebarOpen && (
-          <motion.aside
-            initial={{ x: -280 }}
-            animate={{ x: 0 }}
-            exit={{ x: -280 }}
-            className="fixed lg:relative z-40 w-64 h-screen bg-card border-r border-border flex flex-col"
-          >
-            <div className="p-4 border-b border-border">
-              <h1 className="text-xl font-bold text-primary">Admin Dashboard</h1>
-            </div>
-            
-            <nav className="flex-1 p-4 space-y-1">
-              {menuItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveTab(item.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                    activeTab === item.id
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                  }`}
-                >
-                  <item.icon className="w-5 h-5" />
-                  {item.label}
-                </button>
-              ))}
-            </nav>
+      {/* Sidebar Overlay for Mobile */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-30 lg:hidden" 
+          onClick={() => setSidebarOpen(false)} 
+        />
+      )}
 
-            <div className="p-4 border-t border-border">
-              <Button
-                variant="ghost"
-                className="w-full justify-start text-muted-foreground hover:text-destructive"
-                onClick={() => navigate("/login")}
-              >
-                <LogOut className="w-5 h-5 mr-3" />
-                Logout
-              </Button>
-            </div>
-          </motion.aside>
-        )}
-      </AnimatePresence>
+      {/* Sidebar */}
+      <aside
+        className={`fixed lg:sticky top-0 left-0 z-40 w-64 h-screen bg-card border-r border-border flex flex-col transition-transform duration-300 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0 lg:w-0 lg:overflow-hidden"
+        }`}
+      >
+        <div className="p-4 border-b border-border">
+          <h1 className="text-xl font-bold text-primary">Admin Dashboard</h1>
+        </div>
+        
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+          {menuItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => {
+                setActiveTab(item.id);
+                if (window.innerWidth < 1024) setSidebarOpen(false);
+              }}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                activeTab === item.id
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+            >
+              <item.icon className="w-5 h-5" />
+              {item.label}
+            </button>
+          ))}
+        </nav>
+
+        <div className="p-4 border-t border-border">
+          <Button
+            variant="ghost"
+            className="w-full justify-start text-muted-foreground hover:text-destructive"
+            onClick={() => navigate("/login")}
+          >
+            <LogOut className="w-5 h-5 mr-3" />
+            Logout
+          </Button>
+        </div>
+      </aside>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-h-screen">
@@ -224,7 +230,6 @@ const Dashboard = () => {
                     <TableRow>
                       <TableHead>Title</TableHead>
                       <TableHead>Category</TableHead>
-                      <TableHead>Status</TableHead>
                       <TableHead>Date</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
@@ -234,11 +239,6 @@ const Dashboard = () => {
                       <TableRow key={blog.id}>
                         <TableCell className="font-medium">{blog.title}</TableCell>
                         <TableCell>{blog.category}</TableCell>
-                        <TableCell>
-                          <Badge variant={blog.status === "published" ? "default" : "secondary"}>
-                            {blog.status}
-                          </Badge>
-                        </TableCell>
                         <TableCell>{blog.date}</TableCell>
                         <TableCell className="text-right">
                           <DropdownMenu>
@@ -279,7 +279,6 @@ const Dashboard = () => {
                       <TableHead>Title</TableHead>
                       <TableHead>Category</TableHead>
                       <TableHead>Students</TableHead>
-                      <TableHead>Status</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -289,11 +288,6 @@ const Dashboard = () => {
                         <TableCell className="font-medium">{course.title}</TableCell>
                         <TableCell>{course.category}</TableCell>
                         <TableCell>{course.students}</TableCell>
-                        <TableCell>
-                          <Badge variant={course.status === "active" ? "default" : "secondary"}>
-                            {course.status}
-                          </Badge>
-                        </TableCell>
                         <TableCell className="text-right">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -435,7 +429,6 @@ const Dashboard = () => {
                       <TableHead>Name</TableHead>
                       <TableHead>Course</TableHead>
                       <TableHead>Rating</TableHead>
-                      <TableHead>Status</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -445,11 +438,6 @@ const Dashboard = () => {
                         <TableCell className="font-medium">{testimonial.name}</TableCell>
                         <TableCell>{testimonial.course}</TableCell>
                         <TableCell>{"⭐".repeat(testimonial.rating)}</TableCell>
-                        <TableCell>
-                          <Badge variant={testimonial.status === "approved" ? "default" : "secondary"}>
-                            {testimonial.status}
-                          </Badge>
-                        </TableCell>
                         <TableCell className="text-right">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -609,45 +597,20 @@ const Dashboard = () => {
               <Label>Course Title</Label>
               <Input placeholder="Enter course title" defaultValue={courseModal.data?.title} />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Category</Label>
-                <Select defaultValue={courseModal.data?.category}>
-                  <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Certification">Certification</SelectItem>
-                    <SelectItem value="Specialization">Specialization</SelectItem>
-                    <SelectItem value="Foundation">Foundation</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label>Status</Label>
-                <Select defaultValue={courseModal.data?.status || "active"}>
-                  <SelectTrigger><SelectValue placeholder="Select status" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="inactive">Inactive</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            <div className="space-y-2">
+              <Label>Category</Label>
+              <Select defaultValue={courseModal.data?.category}>
+                <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Certification">Certification</SelectItem>
+                  <SelectItem value="Specialization">Specialization</SelectItem>
+                  <SelectItem value="Foundation">Foundation</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Duration</Label>
-                <Input placeholder="e.g., 12 weeks" />
-              </div>
-              <div className="space-y-2">
-                <Label>Level</Label>
-                <Select>
-                  <SelectTrigger><SelectValue placeholder="Select level" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="beginner">Beginner</SelectItem>
-                    <SelectItem value="intermediate">Intermediate</SelectItem>
-                    <SelectItem value="advanced">Advanced</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            <div className="space-y-2">
+              <Label>Duration</Label>
+              <Input placeholder="e.g., 12 weeks" />
             </div>
             <ImageUpload label="Course Image" placeholder="Enter image URL or upload" />
             <div className="space-y-2">
@@ -698,22 +661,16 @@ const Dashboard = () => {
                 <Input type="number" placeholder="50" />
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Price (₹)</Label>
-                <Input type="number" placeholder="2999" />
-              </div>
-              <div className="space-y-2">
-                <Label>Status</Label>
-                <Select defaultValue={workshopModal.data?.status || "upcoming"}>
-                  <SelectTrigger><SelectValue placeholder="Select status" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="upcoming">Upcoming</SelectItem>
-                    <SelectItem value="open">Registration Open</SelectItem>
-                    <SelectItem value="completed">Completed</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            <div className="space-y-2">
+              <Label>Status</Label>
+              <Select defaultValue={workshopModal.data?.status || "upcoming"}>
+                <SelectTrigger><SelectValue placeholder="Select status" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="upcoming">Upcoming</SelectItem>
+                  <SelectItem value="open">Registration Open</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <ImageUpload label="Workshop Image" placeholder="Enter image URL or upload" />
             <div className="space-y-2">
@@ -759,16 +716,6 @@ const Dashboard = () => {
             <div className="space-y-2">
               <Label>Testimonial</Label>
               <Textarea placeholder="What the student said..." rows={4} />
-            </div>
-            <div className="space-y-2">
-              <Label>Status</Label>
-              <Select defaultValue={testimonialModal.data?.status || "pending"}>
-                <SelectTrigger><SelectValue placeholder="Status" /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="approved">Approved</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
           </div>
           <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 pt-4">

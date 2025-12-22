@@ -94,7 +94,7 @@ const WorkshopDetail = () => {
               {workshop.registrationOpen ? (
                 <Link to={`/workshop/${workshop.id}/register`}>
                   <Button variant="hero" size="xl" className="w-full sm:w-auto">
-                    Register Now - ₹{workshop.price}
+                    Register Now
                   </Button>
                 </Link>
               ) : (
@@ -205,11 +205,9 @@ const WorkshopDetail = () => {
                 </CardContent>
               </Card>
 
-              {/* Price Card */}
+              {/* Register Card */}
               <Card className="border-primary/20 bg-primary/5">
                 <CardContent className="pt-6 text-center">
-                  <p className="text-sm text-muted-foreground mb-2">Workshop Fee</p>
-                  <p className="text-4xl font-bold text-primary mb-4">₹{workshop.price}</p>
                   {workshop.registrationOpen ? (
                     <Link to={`/workshop/${workshop.id}/register`}>
                       <Button variant="hero" className="w-full">
