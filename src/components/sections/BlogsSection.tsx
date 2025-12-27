@@ -1,11 +1,25 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Clock } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { blogPosts } from "@/data/blogs";
+import { BlogPost } from "@/data/blogs";
+import { blogService } from "@/services/blogService";
+import { useState, useEffect } from "react";
 
 export const BlogsSection = () => {
-  const displayedBlogs = blogPosts.slice(0, 3);
+  const [displayedBlogs, setDisplayedBlogs] = useState<BlogPost[]>([]);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const data = await blogService.getAll();
+        setDisplayedBlogs(data.slice(0, 3));
+      } catch (error) {
+        console.error("Failed to fetch blogs", error);
+      }
+    };
+    fetchBlogs();
+  }, []);
 
   return (
     <section id="blogs" className="py-20 lg:py-32 bg-muted/30 relative">
@@ -63,10 +77,6 @@ export const BlogsSection = () => {
                   {/* Meta */}
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     <span>{blog.date}</span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5" />
-                      {blog.readTime}
-                    </span>
                   </div>
 
                   {/* Title */}

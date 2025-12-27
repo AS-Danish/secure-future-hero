@@ -5,13 +5,7 @@ export interface BlogPost {
   content: string;
   image: string;
   category: string;
-  readTime: string;
   date: string;
-  author: {
-    name: string;
-    image: string;
-    role: string;
-  };
   tags: string[];
 }
 
@@ -21,55 +15,50 @@ export const blogPosts: BlogPost[] = [
     title: "Top 10 Cyber Security Threats to Watch in 2025",
     excerpt: "Stay ahead of emerging threats with our comprehensive analysis of the most dangerous cyber attacks targeting organizations this year.",
     content: `
-The cybersecurity landscape is constantly evolving, and 2025 brings new challenges that security professionals must be prepared to face. Here's our analysis of the top threats:
+<p>The cybersecurity landscape is constantly evolving, and 2025 brings new challenges that security professionals must be prepared to face. Here's our analysis of the top threats:</p>
 
-## 1. AI-Powered Attacks
-Artificial intelligence is being weaponized by threat actors to create more sophisticated phishing campaigns, automate vulnerability discovery, and evade traditional security controls.
+<h2>1. AI-Powered Attacks</h2>
+<p>Artificial intelligence is being weaponized by threat actors to create more sophisticated phishing campaigns, automate vulnerability discovery, and evade traditional security controls.</p>
 
-## 2. Supply Chain Attacks
-Following the success of attacks like SolarWinds, threat actors continue to target software supply chains, compromising trusted vendors to reach their ultimate targets.
+<h2>2. Supply Chain Attacks</h2>
+<p>Following the success of attacks like SolarWinds, threat actors continue to target software supply chains, compromising trusted vendors to reach their ultimate targets.</p>
 
-## 3. Ransomware Evolution
-Ransomware groups are becoming more organized, operating like legitimate businesses with customer support, negotiation teams, and even offering "ransomware-as-a-service."
+<h2>3. Ransomware Evolution</h2>
+<p>Ransomware groups are becoming more organized, operating like legitimate businesses with customer support, negotiation teams, and even offering "ransomware-as-a-service."</p>
 
-## 4. Cloud Misconfigurations
-As organizations rapidly migrate to cloud services, misconfigurations remain a leading cause of data breaches. Exposed S3 buckets and misconfigured IAM policies continue to make headlines.
+<h2>4. Cloud Misconfigurations</h2>
+<p>As organizations rapidly migrate to cloud services, misconfigurations remain a leading cause of data breaches. Exposed S3 buckets and misconfigured IAM policies continue to make headlines.</p>
 
-## 5. IoT Vulnerabilities
-The explosion of Internet of Things devices creates an ever-expanding attack surface. Many IoT devices lack basic security controls and are rarely updated.
+<h2>5. IoT Vulnerabilities</h2>
+<p>The explosion of Internet of Things devices creates an ever-expanding attack surface. Many IoT devices lack basic security controls and are rarely updated.</p>
 
-## 6. Zero-Day Exploits
-The market for zero-day vulnerabilities continues to grow, with both state actors and criminal groups actively seeking and exploiting unknown vulnerabilities.
+<h2>6. Zero-Day Exploits</h2>
+<p>The market for zero-day vulnerabilities continues to grow, with both state actors and criminal groups actively seeking and exploiting unknown vulnerabilities.</p>
 
-## 7. Social Engineering
-Despite advances in technology, humans remain the weakest link. Sophisticated social engineering attacks combine multiple techniques to manipulate victims.
+<h2>7. Social Engineering</h2>
+<p>Despite advances in technology, humans remain the weakest link. Sophisticated social engineering attacks combine multiple techniques to manipulate victims.</p>
 
-## 8. API Security Gaps
-As APIs become the backbone of modern applications, attackers are increasingly targeting insecure APIs to access sensitive data.
+<h2>8. API Security Gaps</h2>
+<p>As APIs become the backbone of modern applications, attackers are increasingly targeting insecure APIs to access sensitive data.</p>
 
-## 9. Insider Threats
-Whether malicious or negligent, insider threats pose significant risks that are often harder to detect than external attacks.
+<h2>9. Insider Threats</h2>
+<p>Whether malicious or negligent, insider threats pose significant risks that are often harder to detect than external attacks.</p>
 
-## 10. Critical Infrastructure Attacks
-Nation-state actors and criminal groups are increasingly targeting critical infrastructure, including power grids, water systems, and healthcare facilities.
+<h2>10. Critical Infrastructure Attacks</h2>
+<p>Nation-state actors and criminal groups are increasingly targeting critical infrastructure, including power grids, water systems, and healthcare facilities.</p>
 
-## How to Protect Your Organization
-
-- Implement Zero Trust architecture
-- Conduct regular security assessments
-- Train employees on security awareness
-- Maintain robust backup and recovery procedures
-- Stay informed about emerging threats
+<h2>How to Protect Your Organization</h2>
+<ul>
+<li>Implement Zero Trust architecture</li>
+<li>Conduct regular security assessments</li>
+<li>Train employees on security awareness</li>
+<li>Maintain robust backup and recovery procedures</li>
+<li>Stay informed about emerging threats</li>
+</ul>
     `,
     image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=500&fit=crop",
     category: "Threat Intelligence",
-    readTime: "8 min read",
     date: "Dec 15, 2024",
-    author: {
-      name: "Rajesh Kumar",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
-      role: "Senior Security Consultant",
-    },
     tags: ["Threats", "2025", "Security Trends", "Ransomware", "AI Security"],
   },
   {
@@ -77,78 +66,83 @@ Nation-state actors and criminal groups are increasingly targeting critical infr
     title: "How to Start Your Career in Ethical Hacking",
     excerpt: "A complete roadmap for beginners looking to break into the exciting world of penetration testing and ethical hacking.",
     content: `
-Ethical hacking is one of the most exciting and rewarding careers in cybersecurity. If you're wondering how to get started, this guide will provide you with a clear roadmap.
+<p>Ethical hacking is one of the most exciting and rewarding careers in cybersecurity. If you're wondering how to get started, this guide will provide you with a clear roadmap.</p>
 
-## Understanding Ethical Hacking
+<h2>Understanding Ethical Hacking</h2>
+<p>Ethical hackers, also known as penetration testers or white-hat hackers, are security professionals who use the same techniques as malicious hackers but with permission and for defensive purposes.</p>
 
-Ethical hackers, also known as penetration testers or white-hat hackers, are security professionals who use the same techniques as malicious hackers but with permission and for defensive purposes.
+<h2>Essential Skills to Develop</h2>
 
-## Essential Skills to Develop
+<h3>1. Networking Fundamentals</h3>
+<p>Understanding how networks work is crucial. Learn about:</p>
+<ul>
+<li>TCP/IP protocols</li>
+<li>DNS, DHCP, and HTTP/S</li>
+<li>Firewalls and routing</li>
+<li>Wireless networking</li>
+</ul>
 
-### 1. Networking Fundamentals
-Understanding how networks work is crucial. Learn about:
-- TCP/IP protocols
-- DNS, DHCP, and HTTP/S
-- Firewalls and routing
-- Wireless networking
+<h3>2. Operating Systems</h3>
+<p>Become proficient in:</p>
+<ul>
+<li>Linux (especially Kali Linux)</li>
+<li>Windows Server administration</li>
+<li>Command-line interfaces</li>
+</ul>
 
-### 2. Operating Systems
-Become proficient in:
-- Linux (especially Kali Linux)
-- Windows Server administration
-- Command-line interfaces
+<h3>3. Programming and Scripting</h3>
+<p>Learn at least one programming language:</p>
+<ul>
+<li>Python (highly recommended)</li>
+<li>Bash scripting</li>
+<li>PowerShell</li>
+</ul>
 
-### 3. Programming and Scripting
-Learn at least one programming language:
-- Python (highly recommended)
-- Bash scripting
-- PowerShell
+<h3>4. Web Technologies</h3>
+<p>Understand how web applications work:</p>
+<ul>
+<li>HTML, CSS, JavaScript</li>
+<li>SQL and databases</li>
+<li>Web servers and APIs</li>
+</ul>
 
-### 4. Web Technologies
-Understand how web applications work:
-- HTML, CSS, JavaScript
-- SQL and databases
-- Web servers and APIs
+<h2>Recommended Certifications</h2>
+<ol>
+<li><strong>CompTIA Security+</strong> - Great starting point</li>
+<li><strong>CEH (Certified Ethical Hacker)</strong> - Industry recognized</li>
+<li><strong>OSCP (Offensive Security Certified Professional)</strong> - Highly respected, hands-on exam</li>
+<li><strong>PNPT (Practical Network Penetration Tester)</strong> - Practical, affordable option</li>
+</ol>
 
-## Recommended Certifications
+<h2>Building Your Lab Environment</h2>
+<p>Set up a home lab to practice safely:</p>
+<ul>
+<li>Use VirtualBox or VMware</li>
+<li>Download vulnerable VMs (VulnHub, HackTheBox)</li>
+<li>Practice on legal platforms only</li>
+</ul>
 
-1. **CompTIA Security+** - Great starting point
-2. **CEH (Certified Ethical Hacker)** - Industry recognized
-3. **OSCP (Offensive Security Certified Professional)** - Highly respected, hands-on exam
-4. **PNPT (Practical Network Penetration Tester)** - Practical, affordable option
+<h2>Career Path Options</h2>
+<ul>
+<li>Junior Penetration Tester</li>
+<li>Security Analyst</li>
+<li>Bug Bounty Hunter</li>
+<li>Red Team Operator</li>
+<li>Security Consultant</li>
+</ul>
 
-## Building Your Lab Environment
-
-Set up a home lab to practice safely:
-- Use VirtualBox or VMware
-- Download vulnerable VMs (VulnHub, HackTheBox)
-- Practice on legal platforms only
-
-## Career Path Options
-
-- Junior Penetration Tester
-- Security Analyst
-- Bug Bounty Hunter
-- Red Team Operator
-- Security Consultant
-
-## Final Tips
-
-1. Never hack without permission
-2. Join the community (Discord, forums, conferences)
-3. Document your learning journey
-4. Build a portfolio of CTF writeups
-5. Network with professionals in the field
+<h2>Final Tips</h2>
+<ol>
+<li>Never hack without permission</li>
+<li>Join the community (Discord, forums, conferences)</li>
+<li>Document your learning journey</li>
+<li>Build a portfolio of CTF writeups</li>
+<li>Network with professionals in the field</li>
+</ol>
     `,
     image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=500&fit=crop",
     category: "Career Guide",
-    readTime: "12 min read",
     date: "Dec 10, 2024",
-    author: {
-      name: "Arjun Mehta",
-      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop",
-      role: "Application Security Lead",
-    },
     tags: ["Career", "Ethical Hacking", "Penetration Testing", "Certifications"],
   },
   {
@@ -156,291 +150,62 @@ Set up a home lab to practice safely:
     title: "Understanding Zero Trust Architecture",
     excerpt: "Learn why Zero Trust has become the gold standard for enterprise security and how to implement it in your organization.",
     content: `
-Zero Trust is not just a buzzword—it's a fundamental shift in how we approach security architecture. This article explains what Zero Trust means and how to implement it.
+<p>Zero Trust is not just a buzzword—it's a fundamental shift in how we approach security architecture. This article explains what Zero Trust means and how to implement it.</p>
 
-## What is Zero Trust?
+<h2>What is Zero Trust?</h2>
+<p>Zero Trust is a security framework based on the principle of "never trust, always verify." Unlike traditional perimeter-based security, Zero Trust assumes that threats can come from anywhere—inside or outside the network.</p>
 
-Zero Trust is a security framework based on the principle of "never trust, always verify." Unlike traditional perimeter-based security, Zero Trust assumes that threats can come from anywhere—inside or outside the network.
+<h2>Core Principles</h2>
 
-## Core Principles
+<h3>1. Verify Explicitly</h3>
+<p>Always authenticate and authorize based on all available data points:</p>
+<ul>
+<li>User identity</li>
+<li>Location</li>
+<li>Device health</li>
+<li>Service or workload</li>
+<li>Data classification</li>
+<li>Anomalies</li>
+</ul>
 
-### 1. Verify Explicitly
-Always authenticate and authorize based on all available data points:
-- User identity
-- Location
-- Device health
-- Service or workload
-- Data classification
-- Anomalies
+<h3>2. Use Least Privilege Access</h3>
+<p>Limit user access with:</p>
+<ul>
+<li>Just-in-time (JIT) access</li>
+<li>Just-enough-access (JEA)</li>
+<li>Risk-based adaptive policies</li>
+<li>Data protection</li>
+</ul>
 
-### 2. Use Least Privilege Access
-Limit user access with:
-- Just-in-time (JIT) access
-- Just-enough-access (JEA)
-- Risk-based adaptive policies
-- Data protection
+<h3>3. Assume Breach</h3>
+<p>Minimize blast radius and segment access:</p>
+<ul>
+<li>Verify end-to-end encryption</li>
+<li>Use analytics for visibility</li>
+<li>Drive threat detection</li>
+<li>Improve defenses</li>
+</ul>
 
-### 3. Assume Breach
-Minimize blast radius and segment access:
-- Verify end-to-end encryption
-- Use analytics for visibility
-- Drive threat detection
-- Improve defenses
+<h2>Implementation Steps</h2>
 
-## Implementation Steps
+<h3>Step 1: Identify Your Protect Surface</h3>
+<p>Start small—identify your most critical data, assets, applications, and services (DAAS).</p>
 
-### Step 1: Identify Your Protect Surface
-Start small—identify your most critical data, assets, applications, and services (DAAS).
+<h3>Step 2: Map Transaction Flows</h3>
+<p>Understand how traffic moves across your network to access these resources.</p>
 
-### Step 2: Map Transaction Flows
-Understand how traffic moves across your network to access these resources.
+<h3>Step 3: Build a Zero Trust Architecture</h3>
+<p>Create micro-perimeters around your protect surfaces using next-generation firewalls.</p>
 
-### Step 3: Build a Zero Trust Architecture
-Create micro-perimeters around your protect surfaces using next-generation firewalls.
+<h3>Step 4: Create Zero Trust Policies</h3>
+<p>Determine who should have access to what resources using the Kipling Method (who, what, when, where, why, how).</p>
 
-### Step 4: Create Zero Trust Policies
-Determine who should have access to what resources using the Kipling Method (who, what, when, where, why, how).
-
-### Step 5: Monitor and Maintain
-Continuously inspect and log all traffic, regularly review policies.
-
-## Technologies That Enable Zero Trust
-
-- Identity and Access Management (IAM)
-- Multi-Factor Authentication (MFA)
-- Micro-segmentation
-- Software-Defined Perimeter (SDP)
-- Endpoint Detection and Response (EDR)
-- Security Information and Event Management (SIEM)
-
-## Common Challenges
-
-- Legacy systems integration
-- User experience impact
-- Organizational resistance
-- Complexity of implementation
-
-## Conclusion
-
-Zero Trust is a journey, not a destination. Start with your most critical assets and gradually expand your implementation.
+<h3>Step 5: Monitor and Maintain</h3>
+<p>Continuously inspect and log all traffic, regularly review policies.</p>
     `,
     image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=500&fit=crop",
     category: "Security Architecture",
-    readTime: "10 min read",
     date: "Dec 5, 2024",
-    author: {
-      name: "Sneha Patel",
-      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop",
-      role: "Cloud Security Architect",
-    },
-    tags: ["Zero Trust", "Architecture", "Enterprise Security", "Best Practices"],
-  },
-  {
-    id: "incident-response-guide",
-    title: "Building an Effective Incident Response Plan",
-    excerpt: "A step-by-step guide to creating and maintaining an incident response plan that minimizes damage from security breaches.",
-    content: `
-When a security incident occurs, the difference between a minor inconvenience and a catastrophic breach often comes down to preparation. Here's how to build an effective incident response plan.
-
-## The Six Phases of Incident Response
-
-### 1. Preparation
-- Develop and document policies
-- Build and train your IR team
-- Acquire necessary tools
-- Conduct regular drills
-
-### 2. Identification
-- Monitor systems and networks
-- Analyze alerts and anomalies
-- Determine incident severity
-- Document findings
-
-### 3. Containment
-- Short-term containment
-- System backup
-- Long-term containment
-- Evidence preservation
-
-### 4. Eradication
-- Remove malware
-- Identify root cause
-- Patch vulnerabilities
-- Update security controls
-
-### 5. Recovery
-- Restore systems
-- Verify functionality
-- Monitor for re-infection
-- Return to normal operations
-
-### 6. Lessons Learned
-- Post-incident review
-- Update documentation
-- Improve processes
-- Share knowledge
-
-## Building Your IR Team
-
-Key roles include:
-- Incident Manager
-- Security Analysts
-- IT Operations
-- Legal Counsel
-- Communications Lead
-- Executive Sponsor
-
-## Essential Tools
-
-- SIEM platform
-- Forensic tools
-- Communication channels
-- Documentation system
-- Evidence storage
-
-Remember: An untested plan is not a plan. Conduct regular tabletop exercises and simulations.
-    `,
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=500&fit=crop",
-    category: "Incident Response",
-    readTime: "15 min read",
-    date: "Nov 28, 2024",
-    author: {
-      name: "Amit Verma",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop",
-      role: "SOC Manager",
-    },
-    tags: ["Incident Response", "Security Operations", "Best Practices"],
-  },
-  {
-    id: "web-application-security-basics",
-    title: "Web Application Security: OWASP Top 10 Explained",
-    excerpt: "Understanding the most critical web application security risks and how to protect against them.",
-    content: `
-The OWASP Top 10 represents the most critical security risks to web applications. Understanding these vulnerabilities is essential for developers and security professionals alike.
-
-## A01: Broken Access Control
-Users acting outside their intended permissions. Implement proper authorization checks on every request.
-
-## A02: Cryptographic Failures
-Exposure of sensitive data due to weak cryptography. Use strong encryption and proper key management.
-
-## A03: Injection
-Untrusted data sent to an interpreter. Use parameterized queries and input validation.
-
-## A04: Insecure Design
-Missing or ineffective security controls. Implement threat modeling and secure design patterns.
-
-## A05: Security Misconfiguration
-Improperly configured security settings. Maintain secure configurations and conduct regular audits.
-
-## A06: Vulnerable Components
-Using components with known vulnerabilities. Keep dependencies updated and monitor for CVEs.
-
-## A07: Authentication Failures
-Weaknesses in authentication mechanisms. Implement MFA and secure session management.
-
-## A08: Software and Data Integrity Failures
-Assumptions about software updates and critical data without verification. Use digital signatures and integrity checks.
-
-## A09: Security Logging Failures
-Insufficient logging and monitoring. Implement comprehensive logging and alerting.
-
-## A10: Server-Side Request Forgery
-Web applications fetching remote resources without validation. Sanitize and validate all URLs.
-
-## Best Practices
-
-- Security testing in CI/CD
-- Regular penetration testing
-- Developer security training
-- Bug bounty programs
-    `,
-    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=500&fit=crop",
-    category: "Web Security",
-    readTime: "11 min read",
-    date: "Nov 20, 2024",
-    author: {
-      name: "Arjun Mehta",
-      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop",
-      role: "Application Security Lead",
-    },
-    tags: ["OWASP", "Web Security", "Vulnerabilities", "Secure Coding"],
-  },
-  {
-    id: "soc-analyst-day-in-life",
-    title: "A Day in the Life of a SOC Analyst",
-    excerpt: "Discover what it's really like to work as a Security Operations Center analyst and the skills you need to succeed.",
-    content: `
-Ever wondered what SOC analysts actually do all day? Let me take you through a typical day in the Security Operations Center.
-
-## Morning Shift Handoff (7:00 AM)
-
-The day begins with a handoff from the night shift. We review:
-- Active incidents from overnight
-- Ongoing investigations
-- Priority alerts to watch
-
-## Alert Triage (8:00 AM - 12:00 PM)
-
-Most of the morning is spent reviewing and triaging alerts:
-- Analyze SIEM alerts
-- Investigate suspicious activities
-- Escalate confirmed threats
-- Document findings
-
-## Threat Hunting (1:00 PM - 3:00 PM)
-
-Proactive hunting for threats that evade automated detection:
-- Query historical data
-- Look for IOCs
-- Analyze network traffic
-- Review endpoint telemetry
-
-## Incident Response (As Needed)
-
-When incidents are confirmed:
-- Contain the threat
-- Coordinate with teams
-- Preserve evidence
-- Communicate to stakeholders
-
-## Skills You Need
-
-- Strong analytical abilities
-- Knowledge of attack techniques
-- SIEM proficiency
-- Network fundamentals
-- Calm under pressure
-
-## Tools We Use Daily
-
-- Splunk/QRadar/Sentinel
-- EDR platforms
-- Threat intelligence feeds
-- Ticketing systems
-- Communication tools
-
-## Career Growth
-
-SOC Analyst is often a stepping stone to:
-- Senior Analyst
-- Threat Hunter
-- Incident Responder
-- Security Engineer
-    `,
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=500&fit=crop",
-    category: "Career Guide",
-    readTime: "9 min read",
-    date: "Nov 15, 2024",
-    author: {
-      name: "Amit Verma",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop",
-      role: "SOC Manager",
-    },
-    tags: ["SOC", "Career", "Security Operations", "Day in Life"],
-  },
+    tags: ["Zero Trust", "Security Architecture", "Enterprise Security"],
+  }
 ];
-
-export const getBlogPostById = (id: string): BlogPost | undefined => {
-  return blogPosts.find((post) => post.id === id);
-};

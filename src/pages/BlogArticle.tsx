@@ -1,14 +1,50 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Clock, Calendar, Tag, Share2, Twitter, Linkedin, Facebook } from "lucide-react";
+import { ArrowLeft, Calendar, Tag, Twitter, Linkedin, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getBlogPostById, blogPosts } from "@/data/blogs";
+import { BlogPost } from "@/data/blogs";
+import { blogService } from "@/services/blogService";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/sections/Footer";
+import { useState, useEffect } from "react";
 
 const BlogArticle = () => {
   const { id } = useParams<{ id: string }>();
-  const post = getBlogPostById(id || "");
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      if (!id) return;
+      try {
+        setLoading(true);
+        const data = await blogService.getById(id);
+        setPost(data);
+
+        // Fetch all blogs to filter for related posts
+        const allBlogs = await blogService.getAll();
+        const related = allBlogs
+          .filter((p) => p.id !== data.id && p.category === data.category)
+          .slice(0, 2);
+        setRelatedPosts(related);
+      } catch (error) {
+        console.error("Failed to fetch blog post", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPost();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   if (!post) {
     return (
@@ -22,10 +58,6 @@ const BlogArticle = () => {
       </div>
     );
   }
-
-  const relatedPosts = blogPosts
-    .filter((p) => p.id !== post.id && p.category === post.category)
-    .slice(0, 2);
 
   return (
     <div className="min-h-screen bg-background">
@@ -61,27 +93,9 @@ const BlogArticle = () => {
             </h1>
 
             <div className="flex flex-wrap items-center gap-6 text-muted-foreground">
-              {/* Author */}
-              <div className="flex items-center gap-3">
-                <img
-                  src={post.author.image}
-                  alt={post.author.name}
-                  className="w-10 h-10 rounded-full object-cover"
-                />
-                <div>
-                  <p className="text-foreground font-medium text-sm">{post.author.name}</p>
-                  <p className="text-xs">{post.author.role}</p>
-                </div>
-              </div>
-
               <div className="flex items-center gap-1 text-sm">
                 <Calendar className="w-4 h-4" />
                 {post.date}
-              </div>
-
-              <div className="flex items-center gap-1 text-sm">
-                <Clock className="w-4 h-4" />
-                {post.readTime}
               </div>
             </div>
           </motion.div>
@@ -117,37 +131,10 @@ const BlogArticle = () => {
               transition={{ delay: 0.3 }}
               className="lg:col-span-3"
             >
-              <div className="prose prose-lg max-w-none">
-                {post.content.split('\n').map((paragraph, index) => {
-                  if (paragraph.startsWith('## ')) {
-                    return (
-                      <h2 key={index} className="text-2xl font-bold text-foreground mt-8 mb-4">
-                        {paragraph.replace('## ', '')}
-                      </h2>
-                    );
-                  }
-                  if (paragraph.startsWith('### ')) {
-                    return (
-                      <h3 key={index} className="text-xl font-semibold text-foreground mt-6 mb-3">
-                        {paragraph.replace('### ', '')}
-                      </h3>
-                    );
-                  }
-                  if (paragraph.startsWith('- ')) {
-                    return (
-                      <li key={index} className="text-muted-foreground ml-4">
-                        {paragraph.replace('- ', '')}
-                      </li>
-                    );
-                  }
-                  if (paragraph.trim() === '') return null;
-                  return (
-                    <p key={index} className="text-muted-foreground leading-relaxed mb-4">
-                      {paragraph}
-                    </p>
-                  );
-                })}
-              </div>
+              <div 
+                className="prose prose-lg max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-li:text-muted-foreground prose-strong:text-foreground prose-strong:font-bold prose-a:text-primary prose-a:no-underline hover:prose-a:underline"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
 
               {/* Tags */}
               <div className="flex flex-wrap items-center gap-3 mt-12 pt-8 border-t border-border/50">
@@ -182,27 +169,6 @@ const BlogArticle = () => {
             {/* Sidebar */}
             <aside className="lg:col-span-1">
               <div className="sticky top-24 space-y-8">
-                {/* Author Card */}
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="bg-card border border-border/50 rounded-xl p-6"
-                >
-                  <h4 className="font-semibold text-foreground mb-4">About the Author</h4>
-                  <div className="flex items-center gap-3 mb-4">
-                    <img
-                      src={post.author.image}
-                      alt={post.author.name}
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    <div>
-                      <p className="text-foreground font-medium">{post.author.name}</p>
-                      <p className="text-sm text-muted-foreground">{post.author.role}</p>
-                    </div>
-                  </div>
-                </motion.div>
-
                 {/* Related Posts */}
                 {relatedPosts.length > 0 && (
                   <motion.div
@@ -223,7 +189,7 @@ const BlogArticle = () => {
                             {relatedPost.title}
                           </h5>
                           <p className="text-xs text-muted-foreground mt-1">
-                            {relatedPost.readTime}
+                            {relatedPost.date}
                           </p>
                         </Link>
                       ))}

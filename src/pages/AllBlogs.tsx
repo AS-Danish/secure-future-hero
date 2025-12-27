@@ -1,18 +1,36 @@
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Clock, Search } from "lucide-react";
 import { Link } from "react-router-dom";
-import { blogPosts } from "@/data/blogs";
+import { BlogPost } from "@/data/blogs";
+import { blogService } from "@/services/blogService";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/sections/Footer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const categories = ["All", "Threat Intelligence", "Career Guide", "Security Architecture", "Web Security", "Incident Response"];
 
 const AllBlogs = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredPosts = blogPosts.filter((post) => {
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const data = await blogService.getAll();
+        setBlogs(data);
+      } catch (error) {
+        console.error("Failed to fetch blogs", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
+  const filteredPosts = blogs.filter((post) => {
     const matchesCategory = selectedCategory === "All" || post.category === selectedCategory;
     const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
@@ -89,57 +107,59 @@ const AllBlogs = () => {
       {/* Blog Grid */}
       <section className="py-12">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredPosts.map((post, index) => (
-              <motion.article
-                key={post.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group"
-              >
-                <Link to={`/blog/${post.id}`}>
-                  <div className="relative overflow-hidden rounded-2xl mb-5">
-                    <img
-                      src={post.image}
-                      alt={post.title}
-                      className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
-                    <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 bg-card/90 backdrop-blur-sm text-foreground text-xs font-medium rounded-full">
-                        {post.category}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <span>{post.date}</span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5" />
-                        {post.readTime}
-                      </span>
+          {loading ? (
+             <div className="flex justify-center py-12">
+               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+             </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredPosts.map((post, index) => (
+                <motion.article
+                  key={post.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="group"
+                >
+                  <Link to={`/blog/${post.id}`}>
+                    <div className="relative overflow-hidden rounded-2xl mb-5">
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                      <div className="absolute top-4 left-4">
+                        <span className="px-3 py-1 bg-card/90 backdrop-blur-sm text-foreground text-xs font-medium rounded-full">
+                          {post.category}
+                        </span>
+                      </div>
                     </div>
 
-                    <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors leading-snug">
-                      {post.title}
-                    </h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <span>{post.date}</span>
+                      </div>
 
-                    <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">
-                      {post.excerpt}
-                    </p>
+                      <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors leading-snug">
+                        {post.title}
+                      </h3>
 
-                    <div className="flex items-center gap-2 text-primary font-medium text-sm pt-2">
-                      Read Article
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">
+                        {post.excerpt}
+                      </p>
+
+                      <div className="flex items-center gap-2 text-primary font-medium text-sm pt-2">
+                        Read Article
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              </motion.article>
-            ))}
-          </div>
+                  </Link>
+                </motion.article>
+              ))}
+            </div>
+          )}
 
-          {filteredPosts.length === 0 && (
+          {!loading && filteredPosts.length === 0 && (
             <div className="text-center py-12">
               <p className="text-muted-foreground">No articles found matching your criteria.</p>
             </div>

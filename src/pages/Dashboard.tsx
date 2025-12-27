@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -29,14 +29,29 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import { ImageUpload } from "@/components/ImageUpload";
+import { blogService, BlogInput } from "@/services/blogService";
+import { BlogPost } from "@/data/blogs";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
-// Sample data for UI
-const sampleBlogs = [
-  { id: "1", title: "Top 10 Cybersecurity Threats in 2024", category: "Threats", date: "2024-01-15" },
-  { id: "2", title: "Getting Started with Ethical Hacking", category: "Career", date: "2024-01-10" },
-  { id: "3", title: "Understanding Zero-Day Vulnerabilities", category: "Security", date: "2024-01-05" },
+const modules = {
+  toolbar: [
+    [{ 'header': [1, 2, 3, false] }],
+    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+    ['link', 'image'],
+    ['clean']
+  ],
+};
+
+const formats = [
+  'header',
+  'bold', 'italic', 'underline', 'strike', 'blockquote',
+  'list', 'bullet', 'indent',
+  'link', 'image'
 ];
 
+// Sample data for other sections
 const sampleCourses = [
   { id: "1", title: "Certified Ethical Hacker (CEH)", category: "Certification", students: 156 },
   { id: "2", title: "Web Application Security", category: "Specialization", students: 89 },
@@ -80,8 +95,11 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const [searchQuery, setSearchQuery] = useState("");
   
+  // Data states
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  
   // Modal states
-  const [blogModal, setBlogModal] = useState<{ open: boolean; mode: "add" | "edit"; data?: typeof sampleBlogs[0] }>({ open: false, mode: "add" });
+  const [blogModal, setBlogModal] = useState<{ open: boolean; mode: "add" | "edit"; data?: BlogPost }>({ open: false, mode: "add" });
   const [courseModal, setCourseModal] = useState<{ open: boolean; mode: "add" | "edit"; data?: typeof sampleCourses[0] }>({ open: false, mode: "add" });
   const [workshopModal, setWorkshopModal] = useState<{ open: boolean; mode: "add" | "edit"; data?: typeof sampleWorkshops[0] }>({ open: false, mode: "add" });
   const [testimonialModal, setTestimonialModal] = useState<{ open: boolean; mode: "add" | "edit"; data?: typeof sampleTestimonials[0] }>({ open: false, mode: "add" });
@@ -89,6 +107,80 @@ const Dashboard = () => {
   const [certificateModal, setCertificateModal] = useState<{ open: boolean; mode: "add" | "edit"; data?: typeof sampleCertificates[0] }>({ open: false, mode: "add" });
   const [galleryModal, setGalleryModal] = useState<{ open: boolean; mode: "add" | "edit"; data?: typeof sampleGallery[0] }>({ open: false, mode: "add" });
   const [deleteModal, setDeleteModal] = useState<{ open: boolean; type: string; id: string }>({ open: false, type: "", id: "" });
+
+  // Blog Form State
+  const [blogForm, setBlogForm] = useState<BlogInput>({
+    title: "",
+    excerpt: "",
+    content: "",
+    image: "",
+    category: "",
+    published_at: "",
+    tags: []
+  });
+
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
+  useEffect(() => {
+    const loadBlogData = async () => {
+      if (blogModal.open && blogModal.mode === "edit" && blogModal.data) {
+          // Set initial data from local state to avoid flicker
+          setBlogForm({
+              title: blogModal.data.title,
+              excerpt: blogModal.data.excerpt,
+              content: blogModal.data.content,
+              image: blogModal.data.image,
+              category: blogModal.data.category,
+              published_at: blogModal.data.date,
+              tags: blogModal.data.tags || []
+          });
+
+          try {
+            // Fetch fresh data from server to ensure content is complete
+            const freshData = await blogService.getById(blogModal.data.id);
+            setBlogForm({
+              title: freshData.title,
+              excerpt: freshData.excerpt,
+              content: freshData.content,
+              image: freshData.image,
+              category: freshData.category,
+              published_at: freshData.date,
+              tags: freshData.tags || []
+            });
+          } catch (error) {
+            console.error("Failed to fetch blog details", error);
+            toast({
+              title: "Error",
+              description: "Failed to load latest blog details",
+              variant: "destructive",
+            });
+          }
+      } else if (blogModal.open && blogModal.mode === "add") {
+          setBlogForm({
+              title: "",
+              excerpt: "",
+              content: "",
+              image: "",
+              category: "Threats",
+              published_at: new Date().toISOString().split('T')[0],
+              tags: []
+          });
+      }
+    };
+    loadBlogData();
+  }, [blogModal.open, blogModal.mode, blogModal.data]);
+
+  const fetchBlogs = async () => {
+    try {
+        const data = await blogService.getAll();
+        setBlogs(data);
+    } catch (error) {
+        console.error("Failed to fetch blogs", error);
+        toast({ title: "Error", description: "Failed to fetch blogs.", variant: "destructive" });
+    }
+  };
 
   const menuItems = [
     { id: "overview", label: "Overview", icon: LayoutDashboard },
@@ -101,13 +193,40 @@ const Dashboard = () => {
     { id: "faculty", label: "Faculty", icon: Users },
   ];
 
-  const handleDelete = () => {
-    toast({ title: "Item Deleted", description: "The item has been successfully deleted." });
+  const handleDelete = async () => {
+    if (deleteModal.type === "blog") {
+        try {
+            await blogService.delete(deleteModal.id);
+            toast({ title: "Blog Deleted", description: "The blog post has been successfully deleted." });
+            fetchBlogs();
+        } catch (error) {
+            toast({ title: "Error", description: "Failed to delete blog.", variant: "destructive" });
+        }
+    } else {
+        toast({ title: "Item Deleted", description: "The item has been successfully deleted." });
+    }
     setDeleteModal({ open: false, type: "", id: "" });
   };
 
-  const handleSave = (type: string) => {
-    toast({ title: "Saved Successfully", description: `The ${type} has been saved.` });
+  const handleSave = async (type: string) => {
+    if (type === "blog") {
+        try {
+            if (blogModal.mode === "add") {
+                await blogService.create(blogForm);
+                toast({ title: "Blog Created", description: "New blog post has been published." });
+            } else if (blogModal.data) {
+                await blogService.update(blogModal.data.id, blogForm);
+                toast({ title: "Blog Updated", description: "Blog post has been updated." });
+            }
+            fetchBlogs();
+            setBlogModal({ ...blogModal, open: false });
+        } catch (error) {
+            console.error(error);
+            toast({ title: "Error", description: "Failed to save blog.", variant: "destructive" });
+        }
+    } else {
+        toast({ title: "Saved Successfully", description: `The ${type} has been saved.` });
+    }
   };
 
   return (
@@ -198,7 +317,7 @@ const Dashboard = () => {
               <h2 className="text-2xl font-bold text-foreground">Dashboard Overview</h2>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
-                  { label: "Total Blogs", value: "24", change: "+3 this month" },
+                  { label: "Total Blogs", value: blogs.length.toString(), change: "+3 this month" },
                   { label: "Active Courses", value: "12", change: "2 drafts" },
                   { label: "Upcoming Workshops", value: "5", change: "120 registrations" },
                   { label: "Testimonials", value: "48", change: "5 pending" },
@@ -235,7 +354,7 @@ const Dashboard = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {sampleBlogs.map((blog) => (
+                    {blogs.map((blog) => (
                       <TableRow key={blog.id}>
                         <TableCell className="font-medium">{blog.title}</TableCell>
                         <TableCell>{blog.category}</TableCell>
@@ -554,33 +673,83 @@ const Dashboard = () => {
           <div className="space-y-4">
             <div className="space-y-2">
               <Label>Title</Label>
-              <Input placeholder="Enter blog title" defaultValue={blogModal.data?.title} />
+              <Input 
+                placeholder="Enter blog title" 
+                value={blogForm.title}
+                onChange={(e) => setBlogForm({ ...blogForm, title: e.target.value })}
+              />
             </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Category</Label>
+                <Select 
+                  value={blogForm.category} 
+                  onValueChange={(value) => setBlogForm({ ...blogForm, category: value })}
+                >
+                  <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Threats">Threats</SelectItem>
+                    <SelectItem value="Career">Career</SelectItem>
+                    <SelectItem value="Security">Security</SelectItem>
+                    <SelectItem value="Tools">Tools</SelectItem>
+                    <SelectItem value="Events">Events</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Publish Date</Label>
+                <Input 
+                  type="date"
+                  value={blogForm.published_at ? blogForm.published_at.split('T')[0] : ''}
+                  onChange={(e) => setBlogForm({ ...blogForm, published_at: e.target.value })}
+                />
+              </div>
+            </div>
+
             <div className="space-y-2">
-              <Label>Category</Label>
-              <Select defaultValue={blogModal.data?.category}>
-                <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Threats">Threats</SelectItem>
-                  <SelectItem value="Career">Career</SelectItem>
-                  <SelectItem value="Security">Security</SelectItem>
-                  <SelectItem value="Tools">Tools</SelectItem>
-                </SelectContent>
-              </Select>
+                <Label>Tags (comma separated)</Label>
+                <Input 
+                  placeholder="security, hacking, tutorial" 
+                  value={blogForm.tags?.join(', ') || ''}
+                  onChange={(e) => setBlogForm({ ...blogForm, tags: e.target.value.split(',').map(t => t.trim()) })}
+                />
             </div>
-            <ImageUpload label="Featured Image" placeholder="Enter image URL or upload" />
+
+            <ImageUpload 
+                label="Featured Image" 
+                placeholder="Enter image URL or upload" 
+                value={blogForm.image}
+                onChange={(url) => setBlogForm({ ...blogForm, image: url })}
+            />
+            
             <div className="space-y-2">
               <Label>Excerpt</Label>
-              <Textarea placeholder="Brief description..." rows={2} />
+              <Textarea 
+                placeholder="Brief description..." 
+                rows={2} 
+                value={blogForm.excerpt}
+                onChange={(e) => setBlogForm({ ...blogForm, excerpt: e.target.value })}
+              />
             </div>
             <div className="space-y-2">
               <Label>Content</Label>
-              <Textarea placeholder="Write your blog content here..." rows={6} />
+              <div className="h-72 mb-12">
+                <ReactQuill 
+                  theme="snow"
+                  value={blogForm.content}
+                  onChange={(content) => setBlogForm({ ...blogForm, content })}
+                  modules={modules}
+                  formats={formats}
+                  className="h-64"
+                />
+              </div>
             </div>
+            
           </div>
           <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 pt-4">
             <Button variant="outline" onClick={() => setBlogModal({ open: false, mode: "add" })}>Cancel</Button>
-            <Button variant="hero" onClick={() => { handleSave("blog"); setBlogModal({ open: false, mode: "add" }); }}>Publish Blog</Button>
+            <Button variant="hero" onClick={() => handleSave("blog")}>Publish Blog</Button>
           </div>
         </DialogContent>
       </Dialog>
