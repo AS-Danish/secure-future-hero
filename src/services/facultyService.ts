@@ -48,9 +48,21 @@ const mapToFaculty = (data: any): Faculty => {
 
 export const facultyService = {
   getAll: async (): Promise<Faculty[]> => {
-    const response = await api.get('/api/faculty');
-    const data = Array.isArray(response.data) ? response.data : (response.data.data || []);
-    return data.map(mapToFaculty);
+    try {
+      const response = await api.get('/api/faculty');
+      const data = Array.isArray(response.data) ? response.data : (response.data.data || []);
+      // Ensure we always return an array
+      if (!Array.isArray(data)) {
+        return [];
+      }
+      return data.map(mapToFaculty);
+    } catch (error: any) {
+      // If it's a 404 or network error, return empty array instead of throwing
+      if (error?.response?.status === 404 || error?.code === 'ERR_NETWORK' || !error?.response) {
+        return [];
+      }
+      throw error;
+    }
   },
 
   getById: async (id: string): Promise<Faculty> => {
