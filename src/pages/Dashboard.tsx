@@ -39,8 +39,8 @@ import { facultyService, Faculty, FacultyInput } from "@/services/facultyService
 import { certificateService, Certificate, CertificateInput } from "@/services/certificateService";
 import { galleryService, Gallery, GalleryInput } from "@/services/galleryService";
 import { useAuth } from "@/context/AuthContext";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 
 const modules = {
   toolbar: [
@@ -55,7 +55,7 @@ const modules = {
 const formats = [
   'header',
   'bold', 'italic', 'underline', 'strike', 'blockquote',
-  'list', 'bullet', 'indent',
+  'list',
   'link', 'image'
 ];
 

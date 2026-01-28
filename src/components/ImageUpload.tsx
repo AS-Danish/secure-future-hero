@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { imageUploadService } from "@/services/imageUploadService";
 import { useToast } from "@/hooks/use-toast";
+import { normalizeImageUrl } from "@/utils/imageUtils";
 
 interface ImageUploadProps {
   label?: string;
@@ -28,8 +29,9 @@ export const ImageUpload = ({
   useEffect(() => {
     // Always sync with value prop
     if (value) {
-      setPreviewUrl(value);
-      setUrlInput(value);
+      const normalized = normalizeImageUrl(value);
+      setPreviewUrl(normalized);
+      setUrlInput(normalized);
     } else if (value === "" || value === null || value === undefined) {
       // Only clear if explicitly empty
       setPreviewUrl("");
@@ -73,9 +75,10 @@ export const ImageUpload = ({
       const uploadedUrl = await imageUploadService.upload(file);
       
       // Update preview with server URL and keep it visible
-      setPreviewUrl(uploadedUrl);
-      setUrlInput(uploadedUrl); // Also set URL input so it shows the path
-      onChange?.(uploadedUrl);
+      const normalized = normalizeImageUrl(uploadedUrl);
+      setPreviewUrl(normalized);
+      setUrlInput(normalized); // Also set URL input so it shows the path
+      onChange?.(normalized);
       
       // Clean up local preview URL
       URL.revokeObjectURL(localPreview);
@@ -102,10 +105,11 @@ export const ImageUpload = ({
   };
 
   const handleUrlChange = (url: string) => {
-    setUrlInput(url);
-    if (url) {
-      setPreviewUrl(url);
-      onChange?.(url);
+    const normalized = normalizeImageUrl(url);
+    setUrlInput(normalized);
+    if (normalized) {
+      setPreviewUrl(normalized);
+      onChange?.(normalized);
     }
   };
 
@@ -194,8 +198,9 @@ export const ImageUpload = ({
             variant="outline" 
             size="icon"
             onClick={() => {
-              setPreviewUrl(urlInput);
-              onChange?.(urlInput);
+              const normalized = normalizeImageUrl(urlInput);
+              setPreviewUrl(normalized);
+              onChange?.(normalized);
             }}
           >
             <ImageIcon className="w-4 h-4" />
